@@ -120,7 +120,7 @@ void processNormalKeys(unsigned char key, int x, int y) {
 	else if (key=='w') {
 		xRotated += 10;
 	}
-	else if (key=='v'){
+	else if (key=='m'){//i changed the key to m
 		xscale++;
 	yscale++;
 	zscale++;
