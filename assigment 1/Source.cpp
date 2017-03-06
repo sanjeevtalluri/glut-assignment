@@ -1,17 +1,21 @@
 
 #include <GL\glut.h>
  GLfloat xRotated, yRotated, zRotated;
- GLfloat xscale, yscale, zscale;
+ GLfloat xscale, yscale, zscale,r,g,b;
  GLint view_mode=0;
  GLint vx, vy;
+
+ static int menu_id;
 void init(void)
 {
 glClearColor(1,1,1,0);
 xscale=1;
 yscale=1;zscale=1;
-//gluLookAt(camera[0], camera[1], camera[2], /* look from camera XYZ */ 
-         // 0, 0, 0,  /* look at the origin */ 
-        //  0, 1, 0); /* positive Y up vector */
+r=0,g=1,b=0;
+
+/*gluLookAt(camera[0], camera[1], camera[2], /* look from camera XYZ */ 
+         // 0, 0, 0,i  /* look at the origin */ 
+        (  0, 1, 0); /* positive Y up vector */
 
  
 }
@@ -32,32 +36,38 @@ void DrawCube(void)
 	glScalef(xscale,yscale,zscale);
     glRotatef(zRotated,0.0,0.0,1.0);
   glBegin(GL_QUADS);        // Draw The Cube Using quads
-    glColor3f(0.0f,1.0f,0.0f);    // Color Blue
+    glColor3f(r,g,b);    // Color Blue
+	//glColor3f(0.0f,1.0f,0.0f); 
     glVertex3f( 1.0f, 1.0f,-1.0f);    // Top Right Of The Quad (Top)
     glVertex3f(-1.0f, 1.0f,-1.0f);    // Top Left Of The Quad (Top)
     glVertex3f(-1.0f, 1.0f, 1.0f);    // Bottom Left Of The Quad (Top)
     glVertex3f( 1.0f, 1.0f, 1.0f);    // Bottom Right Of The Quad (Top)
-    glColor3f(1.0f,0.5f,0.0f);    // Color Orange
+   // glColor3f(1.0f,0.5f,0.0f);    // Color Orange
+	glColor3f(r,g,b); 
     glVertex3f( 1.0f,-1.0f, 1.0f);    // Top Right Of The Quad (Bottom)
     glVertex3f(-1.0f,-1.0f, 1.0f);    // Top Left Of The Quad (Bottom)
     glVertex3f(-1.0f,-1.0f,-1.0f);    // Bottom Left Of The Quad (Bottom)
     glVertex3f( 1.0f,-1.0f,-1.0f);    // Bottom Right Of The Quad (Bottom)
-    glColor3f(1.0f,0.0f,0.0f);    // Color Red    
+    //glColor3f(1.0f,0.0f,0.0f);    // Color Red  
+	glColor3f(r,g,b); 
     glVertex3f( 1.0f, 1.0f, 1.0f);    // Top Right Of The Quad (Front)
     glVertex3f(-1.0f, 1.0f, 1.0f);    // Top Left Of The Quad (Front)
     glVertex3f(-1.0f,-1.0f, 1.0f);    // Bottom Left Of The Quad (Front)
     glVertex3f( 1.0f,-1.0f, 1.0f);    // Bottom Right Of The Quad (Front)
-    glColor3f(1.0f,1.0f,0.0f);    // Color Yellow
+    //glColor3f(1.0f,1.0f,0.0f);    // Color Yellow
+	glColor3f(r,g,b); 
     glVertex3f( 1.0f,-1.0f,-1.0f);    // Top Right Of The Quad (Back)
     glVertex3f(-1.0f,-1.0f,-1.0f);    // Top Left Of The Quad (Back)
     glVertex3f(-1.0f, 1.0f,-1.0f);    // Bottom Left Of The Quad (Back)
     glVertex3f( 1.0f, 1.0f,-1.0f);    // Bottom Right Of The Quad (Back)
-    glColor3f(0.0f,0.0f,1.0f);    // Color Blue
+    //glColor3f(0.0f,0.0f,1.0f);  // Color Blue
+	glColor3f(r,g,b); 
     glVertex3f(-1.0f, 1.0f, 1.0f);    // Top Right Of The Quad (Left)
     glVertex3f(-1.0f, 1.0f,-1.0f);    // Top Left Of The Quad (Left)
     glVertex3f(-1.0f,-1.0f,-1.0f);    // Bottom Left Of The Quad (Left)
     glVertex3f(-1.0f,-1.0f, 1.0f);    // Bottom Right Of The Quad (Left)
-    glColor3f(1.0f,0.0f,1.0f);    // Color Violet
+    //glColor3f(1.0f,0.0f,1.0f);    // Color Violet
+	glColor3f(r,g,b); 
     glVertex3f( 1.0f, 1.0f,-1.0f);    // Top Right Of The Quad (Right)
     glVertex3f( 1.0f, 1.0f, 1.0f);    // Top Left Of The Quad (Right)vv
     glVertex3f( 1.0f,-1.0f, 1.0f);    // Bottom Left Of The Quad (Right)
@@ -127,6 +137,27 @@ void processNormalKeys(unsigned char key, int x, int y) {
 	}
 	reshape(vx, vy);
 }
+void menu(int a)
+{
+	if(a==2)
+	{
+		r=0,g=0,b=1;
+	}
+
+	if (a==1)
+	{
+		r=1,g=0,b=0;
+	}
+	glutPostRedisplay();
+}
+void mouse(int button,int state,int x,int y)
+{
+
+}
+
+
+
+
 int main(int argc, char** argv){
 
 glutInit(&argc, argv);
@@ -135,6 +166,13 @@ glutInitDisplayMode(GLUT_SINGLE|GLUT_RGB);
 glutInitWindowPosition(100, 100);
 glutCreateWindow(argv[0]);
 init();
+glutCreateMenu(menu);
+glutAddMenuEntry("red",1);
+glutAddMenuEntry("blue",2);
+glutAttachMenu(GLUT_RIGHT_BUTTON);
+glutMouseFunc(mouse);
+
+
 glutDisplayFunc(DrawCube);
 glutReshapeFunc(reshape);
 glutKeyboardFunc(processNormalKeys);
